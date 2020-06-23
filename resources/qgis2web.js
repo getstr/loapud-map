@@ -1,68 +1,78 @@
 
 isTracking = false;
-geolocateControl = function(opt_options) {
-    var options = opt_options || {};
-    var button = document.createElement('button');
-    button.className += ' fa fa-map-marker';
-    var handleGeolocate = function() {
-        if (isTracking) {
-            map.removeLayer(geolocateOverlay);
-            isTracking = false;
-      } else if (geolocation.getTracking()) {
-            map.addLayer(geolocateOverlay);
-            map.getView().setCenter(geolocation.getPosition());
-            isTracking = true;
-      }
+var geolocateControl = (function (Control) {
+    geolocateControl = function(opt_options) {
+        var options = opt_options || {};
+        var button = document.createElement('button');
+        button.className += ' fa fa-map-marker';
+        var handleGeolocate = function() {
+            if (isTracking) {
+                map.removeLayer(geolocateOverlay);
+                isTracking = false;
+          } else if (geolocation.getTracking()) {
+                map.addLayer(geolocateOverlay);
+                map.getView().setCenter(geolocation.getPosition());
+                isTracking = true;
+          }
+        };
+        button.addEventListener('click', handleGeolocate, false);
+        button.addEventListener('touchstart', handleGeolocate, false);
+        var element = document.createElement('div');
+        element.className = 'geolocate ol-unselectable ol-control';
+        element.appendChild(button);
+        ol.control.Control.call(this, {
+            element: element,
+            target: options.target
+        });
     };
-    button.addEventListener('click', handleGeolocate, false);
-    button.addEventListener('touchstart', handleGeolocate, false);
-    var element = document.createElement('div');
-    element.className = 'geolocate ol-unselectable ol-control';
-    element.appendChild(button);
-    ol.control.Control.call(this, {
-        element: element,
-        target: options.target
-    });
-};
-ol.inherits(geolocateControl, ol.control.Control);
+    if (Control) geolocateControl.__proto__ = Control;
+    geolocateControl.prototype = Object.create(Control && Control.prototype);
+    geolocateControl.prototype.constructor = geolocateControl;
+    return geolocateControl;
+}(ol.control.Control));
 
 var measuring = false;
-measureControl = function(opt_options) {
+var measureControl = (function (Control) {
+    measureControl = function(opt_options) {
 
-  var options = opt_options || {};
+      var options = opt_options || {};
 
-  var button = document.createElement('button');
-  button.className += ' fas fa-ruler ';
+      var button = document.createElement('button');
+      button.className += ' fas fa-ruler ';
 
-  var this_ = this;
-  var handleMeasure = function(e) {
-    if (!measuring) {
-        this_.getMap().addInteraction(draw);
-        createHelpTooltip();
-        createMeasureTooltip();
-        measuring = true;
-    } else {
-        this_.getMap().removeInteraction(draw);
-        measuring = false;
-        this_.getMap().removeOverlay(helpTooltip);
-        this_.getMap().removeOverlay(measureTooltip);
-    }
-  };
+      var this_ = this;
+      var handleMeasure = function(e) {
+        if (!measuring) {
+            this_.getMap().addInteraction(draw);
+            createHelpTooltip();
+            createMeasureTooltip();
+            measuring = true;
+        } else {
+            this_.getMap().removeInteraction(draw);
+            measuring = false;
+            this_.getMap().removeOverlay(helpTooltip);
+            this_.getMap().removeOverlay(measureTooltip);
+        }
+      };
 
-  button.addEventListener('click', handleMeasure, false);
-  button.addEventListener('touchstart', handleMeasure, false);
+      button.addEventListener('click', handleMeasure, false);
+      button.addEventListener('touchstart', handleMeasure, false);
 
-  var element = document.createElement('div');
-  element.className = 'measure-control ol-unselectable ol-control';
-  element.appendChild(button);
+      var element = document.createElement('div');
+      element.className = 'measure-control ol-unselectable ol-control';
+      element.appendChild(button);
 
-  ol.control.Control.call(this, {
-    element: element,
-    target: options.target
-  });
+      ol.control.Control.call(this, {
+        element: element,
+        target: options.target
+      });
 
-};
-ol.inherits(measureControl, ol.control.Control);
+    };
+    if (Control) measureControl.__proto__ = Control;
+    measureControl.prototype = Object.create(Control && Control.prototype);
+    measureControl.prototype.constructor = measureControl;
+    return measureControl;
+}(ol.control.Control));
 var container = document.getElementById('popup');
 var content = document.getElementById('popup-content');
 var closer = document.getElementById('popup-closer');
@@ -97,7 +107,7 @@ var map = new ol.Map({
 var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: "Layers"});
 map.addControl(layerSwitcher);
 
-    var searchLayer = new ol.SearchLayer({
+    var searchLayer = new SearchLayer({
       layer: lyr_Manhole_14,
       colName: 'ID',
       zoom: 10,
@@ -110,7 +120,7 @@ map.addControl(layerSwitcher);
     .getElementsByTagName('button')[0].className +=
     ' fa fa-binoculars';
     
-map.getView().fit([-13531101.685774, 4788310.971259, -13530554.677879, 4788827.027634], map.getSize());
+map.getView().fit([-13523305.798177, 4792631.742265, -13522626.874837, 4793294.604978], map.getSize());
 
 var NO_POPUP = 0
 var ALL_FIELDS = 1
@@ -154,6 +164,7 @@ var doHighlight = false;
 var doHover = false;
 
 var highlight;
+var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
 var onPointerMove = function(evt) {
     if (!doHover && !doHighlight) {
         return;
@@ -201,7 +212,7 @@ var onPointerMove = function(evt) {
                                 popupField += '<strong>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + ':</strong><br />';
                             }
                             if (layer.get('fieldImages')[currentFeatureKeys[i]] != "ExternalResource") {
-                                popupField += (clusterFeature.get(currentFeatureKeys[i]) != null ? Autolinker.link(clusterFeature.get(currentFeatureKeys[i]).toLocaleString(), {truncate: {length: 30, location: 'smart'}}) + '</td>' : '');
+                                popupField += (clusterFeature.get(currentFeatureKeys[i]) != null ? autolinker.link(clusterFeature.get(currentFeatureKeys[i]).toLocaleString()) + '</td>' : '');
                             } else {
                                 popupField += (clusterFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + clusterFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim()  + '" /></td>' : '');
                             }
@@ -227,7 +238,7 @@ var onPointerMove = function(evt) {
                             popupField += '<strong>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + ':</strong><br />';
                         }
                         if (layer.get('fieldImages')[currentFeatureKeys[i]] != "ExternalResource") {
-                            popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? Autolinker.link(currentFeature.get(currentFeatureKeys[i]).toLocaleString(), {truncate: {length: 30, location: 'smart'}}) + '</td>' : '');
+                            popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? autolinker.link(currentFeature.get(currentFeatureKeys[i]).toLocaleString()) + '</td>' : '');
                         } else {
                             popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + currentFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim()  + '" /></td>' : '');
                         }
@@ -344,7 +355,7 @@ var onSingleClick = function(evt) {
                                     popupField += '<strong>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + ':</strong><br />';
                                 }
                                 if (layer.get('fieldImages')[currentFeatureKeys[i]] != "ExternalResource") {
-                                    popupField += (clusterFeature.get(currentFeatureKeys[i]) != null ? Autolinker.link(clusterFeature.get(currentFeatureKeys[i]).toLocaleString(), {truncate: {length: 30, location: 'smart'}}) + '</td>' : '');
+                                    popupField += (clusterFeature.get(currentFeatureKeys[i]) != null ? autolinker.link(clusterFeature.get(currentFeatureKeys[i]).toLocaleString()) + '</td>' : '');
                                 } else {
                                     popupField += (clusterFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + clusterFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim()  + '" /></td>' : '');
                                 }
@@ -370,7 +381,7 @@ var onSingleClick = function(evt) {
                                 popupField += '<strong>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + ':</strong><br />';
                             }
                             if (layer.get('fieldImages')[currentFeatureKeys[i]] != "ExternalResource") {
-                                popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? Autolinker.link(currentFeature.get(currentFeatureKeys[i]).toLocaleString(), {truncate: {length: 30, location: 'smart'}}) + '</td>' : '');
+                                popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? autolinker.link(currentFeature.get(currentFeatureKeys[i]).toLocaleString()) + '</td>' : '');
                             } else {
                                 popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? '<img src="images/' + currentFeature.get(currentFeatureKeys[i]).replace(/[\\\/:]/g, '_').trim()  + '" /></td>' : '');
                             }
