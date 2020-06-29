@@ -340,8 +340,8 @@ lyr_Villa_Line_gen_20.set('fieldImages', {'Comment': 'TextEdit', 'GNSS_3DLen': '
 lyr_loapud_sphere_2.set('fieldLabels', {});
 lyr_Parcels_3.set('fieldLabels', {});
 lyr_LOAPUD_Boundary_4.set('fieldLabels', {});
-lyr_PrivateGreaseInterceptor_5.set('fieldLabels', {'ID': 'inline label', 'Tank_Size': 'header label', 'Date': 'header label', 'Time': 'header label', 'Photo': 'inline label', 'GNSS_Heigh': 'header label', 'Latitude': 'header label', 'Longitude': 'inline label', });
-lyr_PrivateGravity_6.set('fieldLabels', {'ID': 'inline label', 'Diameter__': 'inline label', 'Material': 'inline label', 'Comment': 'inline label', 'Date': 'inline label', 'Time': 'inline label', 'Photo': 'no label', 'GNSS_3DLen': 'inline label', });
+lyr_PrivateGreaseInterceptor_5.set('fieldLabels', {'ID': 'inline label', 'Tank_Size': 'header label', 'Date': 'header label', 'Time': 'header label', 'Photo': 'header label', 'GNSS_Heigh': 'header label', 'Latitude': 'header label', 'Longitude': 'inline label', });
+lyr_PrivateGravity_6.set('fieldLabels', {'ID': 'inline label', 'Diameter__': 'inline label', 'Material': 'header label', 'Comment': 'header label', 'Date': 'header label', 'Time': 'header label', 'Photo': 'header label', 'GNSS_3DLen': 'header label', });
 lyr_PrivateFM_7.set('fieldLabels', {'ID': 'inline label', 'Material': 'inline label', 'Diameter__': 'inline label', 'Comment': 'inline label', 'Date': 'inline label', 'Time': 'header label', 'Photo': 'no label', 'GNSS_3DLen': 'inline label', });
 lyr_Lateral_8.set('fieldLabels', {'ID': 'inline label', 'TYPE': 'inline label', 'DIAMETER__': 'inline label', 'MATERIAL': 'inline label', 'COMMENT': 'inline label', 'DATE': 'inline label', 'TIME': 'no label', 'PHOTO': 'inline label', 'GNSS_3DLEN': 'inline label', });
 lyr_Gravity_9.set('fieldLabels', {'ID': 'inline label', 'DIAMETER__': 'inline label', 'MATERIAL': 'inline label', 'COMMENT': 'inline label', 'DATE': 'inline label', 'TIME': 'inline label', 'PHOTO': 'no label', 'GNSS_3DLEN': 'inline label', });
