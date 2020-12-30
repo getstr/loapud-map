@@ -120,7 +120,7 @@ map.addControl(layerSwitcher);
     .getElementsByTagName('button')[0].className +=
     ' fa fa-binoculars';
     
-map.getView().fit([-13531080.736151, 4791466.347214, -13529715.013670, 4792903.130920], map.getSize());
+map.getView().fit([-13528809.892125, 4791845.384312, -13528379.632251, 4792298.026351], map.getSize());
 
 var NO_POPUP = 0
 var ALL_FIELDS = 1
