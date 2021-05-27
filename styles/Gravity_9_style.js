@@ -17,8 +17,8 @@ var style_Gravity_9 = function(feature, resolution){
     var offsetX = 8;
     var offsetY = 3;
     var placement = 'line';
-    if ("" !== null) {
-        labelText = String("");
+    if (feature.get("ID") !== null) {
+        labelText = String(feature.get("ID"));
     }
     var style = [ new ol.style.Style({
         stroke: new ol.style.Stroke({color: 'rgba(134,67,0,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 3}),
