@@ -108,7 +108,7 @@ var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: "Layers"});
 map.addControl(layerSwitcher);
 
     var searchLayer = new SearchLayer({
-      layer: lyr_Manhole_14,
+      layer: lyr_Manhole_13,
       colName: 'ID',
       zoom: 10,
       collapsed: true,
@@ -120,7 +120,7 @@ map.addControl(layerSwitcher);
     .getElementsByTagName('button')[0].className +=
     ' fa fa-binoculars';
     
-map.getView().fit([-13528149.606684, 4790691.709920, -13526627.352421, 4791762.310631], map.getSize());
+map.getView().fit([-13530898.587983, 4792764.336436, -13530020.974623, 4793588.497226], map.getSize());
 
 var NO_POPUP = 0
 var ALL_FIELDS = 1
